@@ -25,18 +25,23 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get('/api', (req, res) => {
+  //new Date() return date object
   let now = new Date();
+  //Date.parse() return miliseconds Number
   let unix = Date.parse(now);
+  //.toGMTString format date object in GMT
   res.json({unix: unix, utc: now.toGMTString()});
 });
 
 app.get('/api/:input', (req, res) => {
+  //Check if input is number (miliseconds) or else is date format
   if (!isNaN(req.params.input)) {
     let date = new Date(Number(req.params.input));
     res.json({unix: Number(req.params.input), utc: date.toGMTString()});
   }
   else {
     let date = new Date(req.params.input);
+    //Check if input can convert to a valid date or not
     if (date == 'Invalid Date') {
       res.json({error: date.toGMTString()});
     }
